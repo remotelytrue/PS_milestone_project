@@ -2,14 +2,24 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Hello, World!</title>
+		<title>Milestone project intro page</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</head>
 	<body>
 		<div>
-  			<h1>Hello, World!</h1>
+  			<h1>Welcome!</h1>
+  			<p>Please enter stock ticker symbol, from A to AA (both legit!)</p>
+
+  			<form id='stockinputform' method='post' action='index' >
+    		  <p>
+    		Stock:  <input type='text' name='stock' />
+    		  </p>
+    		  <p>
+    		<input type='submit' value='Submit' />
+    		  </p>
+    		</form>
 		</div>
 	</body>
 </html>
