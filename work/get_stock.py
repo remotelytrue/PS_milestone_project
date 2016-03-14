@@ -2,7 +2,6 @@ import requests
 import numpy as np
 import pandas as pd
 import datetime
-import datetime
 from bokeh.plotting import figure
 from bokeh.embed import components
 from jinja2 import Template
