@@ -1,5 +1,6 @@
 numpy
+scipy
 pandas
 bokeh
-dateutil
+python-dateutil
 nomkl

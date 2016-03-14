@@ -7,36 +7,14 @@ from bokeh.embed import components
 from jinja2 import Template
 from dateutil.relativedelta import relativedelta
 
-template = Template("""
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.css"
-    rel="stylesheet" type="text/css">
-    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.10.0.min.js"></script>
-    {{ script }}
-  </head>
-  <body>
-    <div>
-        <h2><a href='index'>Return to index</a></h2>
-    </div>
-    {{ div }}
-  </body>
-</html>
-""")
-
-def get_and_plot(stock_symbol, folder):
-  global template
+def get_and_plot(stock_symbol):
   try:
-    r = requests.get('https://www.quandl.com/api/v3/datasets/WIKI/'+stock_symbol+'.json')
+    url = 'https://www.quandl.com/api/v3/datasets/WIKI/%s.json'%stock_symbol
+    session = requests.Session()
+    session.mount('http://', requests.adapters.HTTPAdapter(max_retries=3))
+    r = session.get(url)
     if r.status_code != 200:
-      return True
+      return 'failed'
     df = pd.DataFrame(data = np.array(r.json()['dataset']['data']), 
                       columns = r.json()['dataset']['column_names'])
     one_month_ago = datetime.date.today()-relativedelta(months=1)
@@ -48,11 +26,9 @@ def get_and_plot(stock_symbol, folder):
     p.line(pd.to_datetime(df.Date[to_use]), df.High[to_use])
     script, div = components(p)
     
-    output_file = folder+'graph.html'
-    with open(output_file, 'w') as f:
-      f.write(template.render(script = script, div = div, title = stock_symbol))
+    return (script, div)
   except:
-    return True
+    return 'failed'
 
 if __name__ == '__main__':
   if get_and_plot('MSFT', ''):

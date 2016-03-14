@@ -16,16 +16,16 @@ def index():
     return render_template('index.html')
   else:
     app.stock = request.form['stock']
-    failed = get_stock.get_and_plot(app.stock, folder)
-
-    if failed:
-      return redirect('/error')
-    else:
-      return redirect('/graph')
+    return redirect('/graph')
 
 @app.route('/graph')
 def graph():
- return render_template('graph.html')
+  plot_components = get_stock.get_and_plot(app.stock)
+  if plot_components == 'failed':
+    return redirect('/error')
+  else:
+    return render_template('graph.html', title = app.stock, script = plot_components[0], 
+                           div = plot_components[1])
 
 @app.route('/error')
 def error():
