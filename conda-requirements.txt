@@ -1,6 +1,6 @@
 numpy
 scipy
 pandas
-bokeh
+bokeh=0.10.0=py27_0
 python-dateutil
 nomkl
